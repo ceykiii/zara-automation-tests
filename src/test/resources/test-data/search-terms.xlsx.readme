@@ -1,0 +1,4 @@
+Excel dosyası ExcelUtils tarafından otomatik olarak oluşturulur.
+Varsayılan değerler: A1=şort, B1=gömlek
+
+Kendi değerlerinizi kullanmak isterseniz search-terms.xlsx dosyasını elle düzenleyebilirsiniz.
