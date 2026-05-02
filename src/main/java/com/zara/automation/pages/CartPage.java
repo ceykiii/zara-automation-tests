@@ -2,7 +2,6 @@ package com.zara.automation.pages;
 
 import com.zara.automation.core.base.BasePage;
 import com.zara.automation.pages.locators.CartPageLocators;
-import com.zara.automation.pages.locators.ProductDetailPageLocators;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 
@@ -100,28 +99,13 @@ public class CartPage extends BasePage {
     @Step("Increase first item quantity by 1")
     public CartPage increaseFirstItemQuantity() {
         String cartUrl = driver.getCurrentUrl();
-
         log.info("Clicking first cart item — navigating to product page");
         click(CartPageLocators.FIRST_ITEM_LINK);
         waitForPageToLoad();
-
-        log.info("Clicking 'Add to cart' button — size drawer opens");
-        click(ProductDetailPageLocators.ADD_TO_CART_BTN);
-        log.info("Selecting first available size");
-        click(ProductDetailPageLocators.SIZE_OPTION);
-
-        // Wait for confirmation that the item was accepted (smart-size or nav-to-cart)
-        waitForEitherVisible(ProductDetailPageLocators.SMART_SIZE_DISMISS, ProductDetailPageLocators.VIEW_CART_BTN);
-        if (isDisplayed(ProductDetailPageLocators.SMART_SIZE_DISMISS)) {
-            log.info("Smart-size dialog — clicking 'No, thanks'");
-            click(ProductDetailPageLocators.SMART_SIZE_DISMISS);
-        }
-
-        // Navigate directly to cart — avoids the flaky notification overlay
-        log.info("Navigating directly to cart: {}", cartUrl);
+        new ProductDetailPage().addToCart();
+        log.info("Navigating back to cart: {}", cartUrl);
         driver.get(cartUrl);
         waitForPageToLoad();
-
         log.info("Returned to cart — quantity: {}", getFirstItemQuantity());
         return this;
     }

@@ -144,6 +144,7 @@
                     <!-- AspectJ load-time weaving agent — required for @Step -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -Dfile.encoding=UTF-8
                     </argLine>
                     <includes>
                         <include>**/*Test.java</include>

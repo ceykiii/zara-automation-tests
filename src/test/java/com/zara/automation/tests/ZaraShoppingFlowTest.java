@@ -15,15 +15,6 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Full end-to-end shopping flow split into ordered, independently named steps.
- *
- * Lifecycle:
- *   @BeforeAll  → opens browser once for all steps
- *   @BeforeEach → logs which step is starting  (browser NOT re-opened)
- *   @AfterEach  → logs which step finished
- *   @AfterAll   → closes browser once after all steps
- */
-/**
  * End-to-end shopping flow covering login, search, product selection, cart management,
  * and item removal. All steps share a single browser session and run in a fixed order
  * so that each step can consume the page state left by the previous one.

@@ -19,14 +19,6 @@ import java.time.Instant;
 
 /**
  * Abstract base for all JUnit 5 test classes.
- *
- * Handles browser lifecycle ({@code @BeforeEach}/{@code @AfterEach}), URL navigation,
- * and consent-cookie injection so individual tests start from a clean, popup-free page.
- * Ordered E2E tests can override {@code setUp}/{@code tearDown} as no-ops and call
- * {@link #initBrowser()} once from {@code @BeforeAll} instead.
- */
-/**
- * Abstract base for all JUnit 5 test classes.
  * Handles browser lifecycle, URL navigation, and OneTrust consent-cookie injection
  * so each test starts from a clean, popup-free page.
  * Ordered E2E tests override {@link #setUp} and {@link #tearDown} as no-ops and call

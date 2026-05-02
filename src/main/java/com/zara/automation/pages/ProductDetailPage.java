@@ -1,6 +1,7 @@
 package com.zara.automation.pages;
 
 import com.zara.automation.core.base.BasePage;
+import com.zara.automation.pages.locators.BasePageLocators;
 import com.zara.automation.pages.locators.ProductDetailPageLocators;
 import io.qameta.allure.Step;
 
@@ -47,26 +48,41 @@ public class ProductDetailPage extends BasePage {
     // ── Actions ──────────────────────────────────────────────────────────────
 
     /**
-     * Clicks 'Add to cart', selects the first available size, dismisses the
-     * smart-size dialog if it appears, then navigates to the cart page.
-     *
-     * @return new CartPage instance
+     * Clicks 'Add to cart', selects the first available size, and dismisses the
+     * smart-size dialog if it appears. Does not navigate away from the page.
+     * Use {@link #addToCartAndGoToCart()} to also navigate to the cart afterwards.
      */
-    @Step("Add product to cart and navigate to cart page")
-    public CartPage addToCartAndGoToCart() {
+    @Step("Add product to cart")
+    public void addToCart() {
         log.info("Clicking 'Add to cart' button — size drawer will open");
         click(ProductDetailPageLocators.ADD_TO_CART_BTN);
         log.info("Selecting first available size from drawer");
         click(ProductDetailPageLocators.SIZE_OPTION);
-        log.info("Waiting for nav-to-cart or smart-size dialog");
+        log.info("Waiting for smart-size dialog or view-cart confirmation");
         waitForEitherVisible(ProductDetailPageLocators.SMART_SIZE_DISMISS, ProductDetailPageLocators.VIEW_CART_BTN);
         if (isDisplayed(ProductDetailPageLocators.SMART_SIZE_DISMISS)) {
             log.info("Smart-size dialog — clicking 'No, thanks'");
             find(ProductDetailPageLocators.SMART_SIZE_DISMISS).click();
         }
-        // jsClick bypasses the add-to-cart notification overlay that intercepts regular clicks
-        log.info("Clicking 'View cart'");
-        jsClick(ProductDetailPageLocators.VIEW_CART_BTN);
+    }
+
+    /**
+     * Adds the product to the cart and navigates to the cart page.
+     * Clicks the view-cart notification if still visible; falls back to the header
+     * cart icon if the notification has already auto-dismissed.
+     *
+     * @return new CartPage instance
+     */
+    @Step("Add product to cart and navigate to cart page")
+    public CartPage addToCartAndGoToCart() {
+        addToCart();
+        if (isDisplayed(ProductDetailPageLocators.VIEW_CART_BTN)) {
+            log.info("Clicking 'View cart' notification button");
+            findClickable(ProductDetailPageLocators.VIEW_CART_BTN).click();
+        } else {
+            log.info("View-cart notification expired — navigating via header cart icon");
+            click(BasePageLocators.CART_ICON);
+        }
         return new CartPage();
     }
 }
