@@ -80,13 +80,13 @@ public final class ExcelUtils {
      * @return string representation of the cell value, or {@code ""} for blank/error cells
      */
     private static String asString(Cell cell) {
-        return switch (cell.getCellType()) {
-            case STRING  -> cell.getStringCellValue().trim();
-            case NUMERIC -> String.valueOf((long) cell.getNumericCellValue());
-            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
-            case FORMULA -> cell.getCellFormula();
-            default      -> "";
-        };
+        switch (cell.getCellType()) {
+            case STRING:  return cell.getStringCellValue().trim();
+            case NUMERIC: return String.valueOf((long) cell.getNumericCellValue());
+            case BOOLEAN: return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA: return cell.getCellFormula();
+            default:      return "";
+        }
     }
 
     /**
