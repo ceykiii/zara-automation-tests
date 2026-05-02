@@ -3,7 +3,9 @@ package com.zara.automation.pages;
 import com.zara.automation.core.base.BasePage;
 import com.zara.automation.pages.locators.LoginPageLocators;
 import io.qameta.allure.Step;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -52,7 +54,7 @@ public class LoginPage extends BasePage {
         handleErrorDialogIfPresent();
 
         log.info("Step 2: Clicking 'Sign in with password' link");
-        click(LoginPageLocators.PASSWORD_LINK);
+        clickPasswordLinkAndAwaitForm();
 
         log.info("Step 3: Entering password");
         type(LoginPageLocators.PASSWORD_INPUT, password);
@@ -71,6 +73,36 @@ public class LoginPage extends BasePage {
      */
     public boolean isErrorDisplayed() {
         return isDisplayed(LoginPageLocators.ERROR_MSG);
+    }
+
+    /**
+     * Clicks "Şifre ile giriş yapın" and waits for the password form to appear.
+     * Uses FluentWait to retry through StaleElementReferenceException during page transition.
+     * Falls back to jsClick if the password input is still not visible after the first click.
+     */
+    private void clickPasswordLinkAndAwaitForm() {
+        new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(10))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(StaleElementReferenceException.class)
+                .until(d -> {
+                    d.findElement(LoginPageLocators.PASSWORD_LINK).click();
+                    return true;
+                });
+        waitForPageToLoad();
+
+        boolean formVisible = false;
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(8))
+                    .until(d -> isDisplayed(LoginPageLocators.PASSWORD_INPUT));
+            formVisible = true;
+        } catch (Exception ignored) {}
+
+        if (!formVisible) {
+            log.warn("Password form not visible after click — retrying with JS click");
+            jsClick(LoginPageLocators.PASSWORD_LINK);
+            waitForPageToLoad();
+        }
     }
 
     /** After "Devam et": waits up to 6 s for password link or error dialog. */
