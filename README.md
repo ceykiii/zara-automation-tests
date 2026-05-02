@@ -1,4 +1,4 @@
-# Zara E2E Selenium Framework
+# Zara Automation Tests
 
 End-to-end test automation framework built with Java, Selenium 4, JUnit 5, and Allure.  
 Covers the full shopping journey on Zara Turkey — login, search, product selection, and cart management.
@@ -9,7 +9,7 @@ Covers the full shopping journey on Zara Turkey — login, search, product selec
 
 | Layer | Technology | Version |
 |---|---|---|
-| Language | Java | 17 |
+| Language | Java | 11 |
 | Build | Apache Maven | 3.x |
 | Test Framework | JUnit 5 | 5.10.2 |
 | Browser Automation | Selenium WebDriver | 4.20.0 |
@@ -24,7 +24,7 @@ Covers the full shopping journey on Zara Turkey — login, search, product selec
 ## Project Structure
 
 ```
-zara-e2e-selenium-framework/
+zara-automation-tests/
 ├── src/
 │   ├── main/java/com/zara/automation/
 │   │   ├── config/
@@ -69,7 +69,7 @@ zara-e2e-selenium-framework/
 
 ### Prerequisites
 
-- Java 17+
+- Java 11+
 - Maven 3.6+
 - Google Chrome (any version — WebDriverManager handles the driver automatically)
 
@@ -77,8 +77,8 @@ zara-e2e-selenium-framework/
 
 ```bash
 # 1. Clone the repository
-git clone <repo-url>
-cd zara-e2e-selenium-framework
+git clone https://github.com/ceykiii/zara-automation-tests.git
+cd zara-automation-tests
 
 # 2. Create the .env file
 cp .env.example .env
