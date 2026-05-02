@@ -17,6 +17,11 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Utility class for capturing and persisting WebDriver screenshots.
+ * Each screenshot is saved to the configured {@code SCREENSHOT_DIR} and also
+ * attached to the Allure report as an inline image via {@link io.qameta.allure.Attachment}.
+ */
 public final class ScreenshotUtils {
 
     private static final Logger log = LogManager.getLogger(ScreenshotUtils.class);

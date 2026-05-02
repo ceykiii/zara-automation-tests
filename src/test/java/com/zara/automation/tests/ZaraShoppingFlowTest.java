@@ -23,6 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
  *   @AfterEach  → logs which step finished
  *   @AfterAll   → closes browser once after all steps
  */
+/**
+ * End-to-end shopping flow covering login, search, product selection, cart management,
+ * and item removal. All steps share a single browser session and run in a fixed order
+ * so that each step can consume the page state left by the previous one.
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("e2e")
@@ -84,6 +89,10 @@ class ZaraShoppingFlowTest extends BaseTest {
 
     // ── Steps ──────────────────────────────────────────────────────────────────
 
+    /**
+     * Navigates to the Zara TR home page, logs in with the configured test credentials,
+     * and navigates to the Men → View All catalogue listing.
+     */
     @Test
     @Order(1)
     @Story("Authentication & Navigation")
@@ -109,6 +118,10 @@ class ZaraShoppingFlowTest extends BaseTest {
         );
     }
 
+    /**
+     * Types the first Excel search term into the search box, clears it, types the second term,
+     * submits the query, and asserts that the results grid is not empty.
+     */
     @Test
     @Order(2)
     @Story("Search")
@@ -134,6 +147,10 @@ class ZaraShoppingFlowTest extends BaseTest {
         log.info("Total {} results found", resultsPage.getResultCount());
     }
 
+    /**
+     * Picks a random product from the search results, navigates to its detail page,
+     * and writes the product name and price to the output text file.
+     */
     @Test
     @Order(3)
     @Story("Product Selection")
@@ -152,6 +169,10 @@ class ZaraShoppingFlowTest extends BaseTest {
         log.info("Product info saved: {}", file);
     }
 
+    /**
+     * Adds the product to the cart and asserts that the price shown in the cart
+     * matches the price recorded on the product detail page.
+     */
     @Test
     @Order(4)
     @Story("Cart — Add & Price Verification")
@@ -176,6 +197,10 @@ class ZaraShoppingFlowTest extends BaseTest {
         log.info("Prices match");
     }
 
+    /**
+     * Increases the first cart item's quantity by navigating back to its product page,
+     * adding it again, and returning to the cart — then asserts the quantity equals 2.
+     */
     @Test
     @Order(5)
     @Story("Cart — Quantity")
@@ -192,6 +217,9 @@ class ZaraShoppingFlowTest extends BaseTest {
         log.info("Quantity confirmed as 2");
     }
 
+    /**
+     * Removes the first item from the cart and asserts that the cart is empty afterwards.
+     */
     @Test
     @Order(6)
     @Story("Cart — Remove")
